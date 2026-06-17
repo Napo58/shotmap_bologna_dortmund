@@ -1,125 +1,72 @@
 # Sofascore Football Match Shotmap Scraper ⚽🥅
 
-This repository contains a Python-based Jupyter Notebook that automates the extraction of comprehensive, granular shot map data from a dynamic football match page on Sofascore (specifically tailored for the Bologna vs. Borussia Dortmund fixture).
+Questo repository contiene un Jupyter Notebook basato su Python (`sofascore_shotmap.ipynb`) progettato per automatizzare l'estrazione di dati granulari e avanzati sulle mappe di tiro da pagine web dinamiche di Sofascore (configurato nello specifico per il match Bologna vs. Borussia Dortmund).
 
-Using **Selenium WebDriver**, the script interacts with dynamic UI components, dismisses modal disruptions, handles tab-switching, and systematically parses both on-field spatial coordinates ($x, y$) and metric statistics for every shot taken during the match.
-
----
-
-## 📌 Features
-
-* **Banners & Pop-up Handling:** Automatically detects and closes cookie banners and language selection overlays to prevent UI blockages during element interactions.
-
-
-* **Dynamic Tab Navigation:** Targets and executes JavaScript-driven clicks to navigate straight to the match's *Statistics* section.
-
-
-* **Team-Specific Dual Scraping:**
-* **Bologna:** Loops through the left UI tabpanel container, interacting with button controls to index shots via custom unique identifiers (`minute|shooter|start_x`).
-
-
-* **Borussia Dortmund:** Transitions to the right tabpanel, locating the respective team toggle buttons to extract the opposing squad's shot collection.
-
-
-
-
-* **Granular Metric Extraction:** Parses explicit variables per shot event, including minute, shooter name, Expected Goals ($xG$), Expected Goals on Target ($xGOT$), Outcome, and Situation.
-
-
-* **Spatial Mapping Coordinates:** Captures dynamic SVG elements to record exact starting coordinates (`cx`, `cy`) on the pitch map alongside shot arrival placement coordinates extracted from SVG `transform: translate()` attributes.
-
-
-* **Data Cleaning Pipeline:** Standardizes text values (e.g., handles character normalizations like replacing `ī` with `i`, and maps missing $xGOT$ placeholders directly to Python `None`) before organizing into a structured Pandas DataFrame.
-
-
+Lo script utilizza **Selenium WebDriver** per interagire con i componenti dinamici della pagina, chiudere i banner di interruzione, gestire il cambio di tab dei team e analizzare sistematicamente sia le coordinate spaziali (x, y) che le metriche statistiche di ogni tiro effettuato.
 
 ---
 
-## 🛠️ Requirements & Installation
+## 📌 Funzionalità Principali
 
-The script utilizes standard scraping and data processing libraries. To set up your local environment, run the embedded notebook environment cell or execute the following command in your terminal:
+* **Gestione dei Pop-up:** Rileva e chiude automaticamente i banner dei cookie e le selezioni della lingua per evitare blocchi dell'interfaccia durante lo scraping.
+* **Navigazione Dinamica dei Tab:** Individua e clicca via JavaScript gli elementi per navigare direttamente alla sezione *Statistiche* del match.
+* **Scraping Bilaterale (Team-Specific):** * **Bologna:** Scorre il pannello sinistro interagendo con i pulsanti per indicizzare i tiri tramite identificativi univoci (`minute|shooter|start_x`).
+  * **Borussia Dortmund:** Passa al pannello destro per estrarre la collezione di tiri della squadra avversaria.
+* **Estrazione Metriche Avanzate:** Raccoglie variabili esplicite per ogni evento di tiro, inclusi minuto, nome del giocatore, Expected Goals (`xG`), Expected Goals on Target (`xGOT`), esito e situazione di gioco.
+* **Coordinate Mappa Spaziale:** Cattura gli elementi SVG dinamici per registrare le coordinate esatte di partenza (`cx`, `cy`) sul campo e le coordinate di arrivo nello specchio della porta (estratte dagli attributi `transform: translate()`).
+* **Pipeline di Pulizia Dati:** Standardizza i valori testuali (es. normalizza caratteri speciali come `ī` in `i`, e mappa i vettori mancanti di `xGOT` in `None` di Python) prima di organizzare il tutto in un DataFrame di Pandas.
+
+---
+
+## 🛠️ Requisiti e Installazione
+
+Lo script utilizza librerie standard per il data processing e lo scraping. Puoi configurare l'ambiente eseguendo questo comando nel terminale:
 
 ```bash
 pip install requests beautifulsoup4 pandas openpyxl lxml selenium
 
 ```
 
-### Pre-requisites
+### Prerequisiti:
 
-* **Google Chrome** installed on the host system.
-
-
-* An operational installation of Chrome WebDriver matching your local browser version (Selenium handles automated management natively in newer editions).
-
-
+* **Google Chrome** installato sul sistema.
+* Una versione funzionante di Chrome WebDriver corrispondente alla tua versione locale del browser (nelle ultime versioni di Selenium la gestione è nativa e automatica).
 
 ---
 
-## 📂 Code Pipeline Architecture
+## 📂 Architettura della Pipeline
 
-1. **Driver Initialization:** Launches a Chrome instance and navigates directly to the specified Sofascore match URL.
-
-
-2. **UI Setup:** Handles modal dismissals, transitions focus directly onto the match statistics tab, and waits for target container rendering via `WebDriverWait` rules.
-
-
-3. **Bologna Scraping:** Iterates through available shot sequences inside `#tabpanel-left`, saving the metric metadata and the positional markers.
-
-
-4. **Team Switch:** Finds and scrolls down to the selection button for Dortmund, toggles focus, and re-triggers the matching event loop logic inside `#tabpanel-right`.
-
-
-5. **Data Structuring:** Joins the shot lists from both teams into a master Pandas DataFrame, applies targeted data-cleaning procedures, and presents the tabular dataset.
-
-
-6. **Teardown:** Terminates the active browser session cleanly via a comprehensive `finally` block to protect local system memory resources.
-
-
+1. **Inizializzazione del Driver:** Avvia un'istanza di Chrome e naviga direttamente all'URL del match di Sofascore.
+2. **Configurazione UI:** Chiude i moduli di interruzione, sposta il focus sul tab delle statistiche e attende il caricamento dei container tramite regole `WebDriverWait`.
+3. **Scraping Bologna:** Itera attraverso le sequenze di tiro all'interno del blocco `#tabpanel-left`.
+4. **Cambio Team:** Trova il pulsante di selezione del Dortmund, clicca e riattiva la logica di estrazione all'interno del blocco `#tabpanel-right`.
+5. **Strutturazione Dati:** Unisce le liste di tiri in un unico DataFrame di Pandas, applica le procedure di pulizia e mostra il dataset tabellare.
+6. **Chiusura Sessione:** Termina il browser in sicurezza all'interno di un blocco `finally` per preservare la memoria di sistema.
 
 ---
 
-## 📊 Extracted Data Schema
+## 📊 Schema dei Dati Estratti
 
-The finalized output matrix is organized with the following feature structures:
-
-| Column Field | Description | Type / Format |
+| Campo Colonna | Descrizione | Tipo / Formato |
 | --- | --- | --- |
-| `team` | Name of the attacking squad (e.g., Bologna, Borussia Dortmund)
-
- | String |
-| `shot_number` | Chronological iteration index of the shot within the scraping sequence
-
- | Integer |
-| `minute` | The specific minute of the match when the shot event occurred
-
- | String (e.g., `45'`) |
-| `shooter` | Name of the player executing the shot (normalized character string)
-
- | String |
-| `xG` | Expected Goals metric value for the shot opportunity
-
- | Numeric String |
-| `xGOT` | Expected Goals on Target (normalized to `None` if blocked or off-target)
-
- | Numeric String / None |
-| `outcome` | Categorized result of the play (e.g., Saved, Blocked, Goal, Missed)
-
- | String |
-| `situation` | The contextual nature of the attack (e.g., Open Play, Set Piece)
-
- | String |
-| `start_x` / `start_y` | Spatial pixel grid coordinates where the shot was fired on the pitch map
-
- | Numeric String |
-| `arrival_x` / `arrival_y` | Spatial frame coordinates where the ball arrived on the goal framework
-
- | Numeric String / None |
+| `team` | Nome della squadra che attacca (es. Bologna, Borussia Dortmund) | Testo (Stringa) |
+| `shot_number` | Indice cronologico del tiro all'interno della sequenza estratta | Intero |
+| `minute` | Il minuto specifico del match in cui è avvenuto il tiro | Testo (es. `45'`) |
+| `shooter` | Nome del giocatore che ha calciato (normalizzato) | Testo (Stringa) |
+| `xG` | Valore della metrica Expected Goals per quel tiro | Stringa Numerica |
+| `xGOT` | Expected Goals on Target (impostato a `None` se parato/fuori) | Stringa / None |
+| `outcome` | Risultato categorizzato della giocata (es. Saved, Blocked, Goal, Missed) | Testo (Stringa) |
+| `situation` | Il contesto tattico dell'azione (es. Open Play, Set Piece) | Testo (Stringa) |
+| `start_x` / `start_y` | Coordinate pixel della griglia in cui è stato scoccato il tiro | Stringa Numerica |
+| `arrival_x` / `arrival_y` | Coordinate spaziali di arrivo del pallone nello specchio della porta | Stringa / None |
 
 ---
 
-## ⚠️ Notes & Troubleshooting
+## ⚠️ Note e Risoluzione Problemi
 
 > [!WARNING]
-> **Dynamic Web Element Identifiers:** Sports data providers like Sofascore consistently optimize layout classes and tracking protocols. If the target page encounters structural shifts, explicit relative selectors (like the rigid XPath maps used to find the `Statistics` anchor or team selector nodes) might throw a `NoSuchElementException`. If this occurs, inspect the modified target source HTML and re-map the breaking CSS selector or XPath variables accordingly.
-> 
->
+> **Identificatori Web Dinamici:** I provider di dati sportivi come Sofascore aggiornano frequentemente le classi CSS e i selettori di tracciamento. Se la pagina subisce modifiche strutturali, i selettori XPath rigidi (utilizzati per trovare l'ancora delle statistiche o i nodi dei team) potrebbero restituire un errore di tipo `NoSuchElementException`. In tal caso, ispezionare il codice sorgente HTML aggiornato e rimappare le variabili dei selettori nel notebook.
+
+```
+
+```
