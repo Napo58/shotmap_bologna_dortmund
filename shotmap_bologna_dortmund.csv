@@ -1,0 +1,21 @@
+team,shot_number,minute,shooter,xG,xGOT,outcome,situation,start_x,start_y,arrival_x,arrival_y
+Bologna,1,8',C. Lykogiannis,0.01,,Blocked,Corner,63,46.2,,
+Bologna,2,9',D. Ndoye,0.01,,Missed,Corner,106.12,90.3,169.1859375,4
+Bologna,3,24',R. Orsolini,0.03,,Missed,Assisted,184.8,105.42,217.7859375,74.824
+Bologna,4,26',L. Ferguson,0.08,,Blocked,Assisted,164.07999999999998,33.18,,
+Bologna,5,27',R. Orsolini,0.03,,Blocked,Corner,180.87999999999997,67.62,,
+Bologna,6,28',R. Orsolini,0.02,0.08,Saved,Corner,175.28,47.88,170.9859375,63.736000000000004
+Bologna,7,29',R. Orsolini,0.04,,Missed,Corner,189.56,54.6,125.9859375,28.204
+Bologna,8,32',S. Castro,0.05,,Missed,Open play,184.8,31.080000000000005,201.5859375,73.648
+Bologna,9,34',D. Ndoye,0.02,,Blocked,Assisted,83.72,67.62,,
+Bologna,10,51',D. Ndoye,0.50,,Missed,Assisted,126.56,16.38,255.5859375,14.175999999999998
+Bologna,11,58',D. Ndoye,0.03,,Missed,Assisted,130.20000000000002,49.56,139.4859375,36.352
+Bologna,12,69',T. Pobega,0.01,0.02,Saved,Assisted,175.84,122.22000000000001,151.1859375,61.132000000000005
+Bologna,13,71',T. Dallinga,0.49,0.31,Goal,Assisted,138.04,35.7,144.8859375,73.312
+Bologna,14,72',T. Dallinga,0.23,0.61,Saved,Open play,105.28,52.92,124.1859375,60.544
+Bologna,15,72',S. I. Junior,0.30,0.32,Goal,Open play,136.36,35.7,157.4859375,74.90800000000002
+Bologna,16,83',J. Odgaard,0.15,0.15,Saved,Open play,92.68,21.419999999999998,133.1859375,60.544
+Bologna,17,90' +4,D. Ndoye,0.08,,Missed,Assisted,95.76,37.38,221.3859375,67.852
+Borussia Dortmund,1,15',S. Guirassy,0.79,0.66,Goal,Penalty,140,48.300000000000004,125.9859375,63.736000000000004
+Borussia Dortmund,2,17',G. Reyna,0.06,0.11,Saved,Assisted,160.44,97.44,131.3859375,53.152
+Borussia Dortmund,3,68',S. Guirassy,0.14,,Missed,Corner,137.2,28.14,134.9859375,34
